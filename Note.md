@@ -145,7 +145,113 @@ FROM <表名>
 WHERE <条件表达式>;
 ```
 
+###  
 
+## 第三章：聚合和排序
+
+###### 计算全部\具体数据的行数 (COUNT)
+
+```
+SELECT COUNT(*)
+  FROM Product;
+  
+SELECT COUNT(purchase_price)
+  FROM Product;
+```
+
+
+
+###### 合计值 (SUM)
+
+```
+SELECT SUM(sale_price)
+  FROM Product;
+```
+
+
+
+###### 平均值 (AVG)
+
+```
+SELECT AVG(sale_price)
+  FROM Product;
+```
+
+
+
+###### 最大值\最小值 (MAX\MIN)
+
+```
+SELECT MAX(sale_price), MIN(purchase_price)
+  FROM Product;
+```
+
+
+
+###### 计算去除重复数据后的数据行数 
+
+```
+SELECT COUNT(DISTINCT product_type)
+  FROM Product;
+```
+
+
+
+###### 按照商品种类统计数据行数 (GROUP BY)
+
+```
+SELECT product_type, COUNT(*)
+  FROM Product
+ GROUP BY product_type;
+ 
+\* 
+常见错误：
+1. 在SELECT字句中书写了多余的列
+2. 在GROUP BY子句中写了列的别名（PostgreSQL除外）
+3. 认为GROUP BY子句的结果能排序
+4. 在WHERE子句中使用聚合函数（WHERE只能指定记录（行）的条件，HAVING才可指定组的条件）
+*\
+```
+
+
+
+###### 过滤后汇总处理 (WHERE, GROUP BY)
+
+```
+SELECT purchase_price,COUNT(*)
+	FROM Product
+	WHERE product_type = '衣服'
+ GROUP BY purchase_price;
+ 
+\*
+语句顺序: SELECT -> FROM -> WHERE -> GROUP BY
+
+执行顺序: FROM -> WHERE -> GROUP BY -> SELECT
+*\
+```
+
+
+
+指定包含2行数据的组
+
+```
+SELECT product_type, COUNT(*)
+  FROM Product
+ GROUP BY product_type
+HAVING COUNT(*) = 2;
+
+\*
+HAVING语句中只能出现常数、聚合函数、GROUP BY子句中指定的列名
+
+语句顺序: SELECT -> FROM -> WHERE -> GROUP BY -> HAVING
+
+执行顺序: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT
+*\
+```
+
+
+
+HAVING子句/WHERE子句
 
 
 
